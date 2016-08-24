@@ -2,9 +2,57 @@
 <html>
 <head>
     <title>8ps1 FTW</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.js"></script>
+    <script type="application/javascript">
+
+        function changeImageSrc(imageTag, imageSrc, callback){
+            //http://stackoverflow.com/questions/554273/changing-the-image-source-using-jquery
+            imageTag.attr("src", imageSrc);
+            callback();
+        }
+
+        function findImageTag(callback){
+            callback($("#image"));
+        }
+
+        function applyInteractiveImageChangeOnClick(){
+            findImageTag(function(imageTag){
+                imageTag.on({
+                    'click': function() {
+                        randomizeImage(function(){
+                        });
+                    }
+                });
+            });
+        }
+
+        function randomImageFromGiphy(callback){
+            $.get("https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC", function( data ) {
+                var imageUrl = data.data.image_url;
+                callback(imageUrl);
+            });
+        }
+
+        function randomizeImage(callback){
+            findImageTag(function(imageTag){
+                randomImageFromGiphy(function(randomImage){
+                    console.log(randomImage);
+                    changeImageSrc(imageTag, randomImage, function(){
+                        callback();
+                    });
+                });
+            });
+        }
+
+        $(document).ready(function() {
+            randomizeImage(function(){
+            });
+            applyInteractiveImageChangeOnClick();
+        });
+    </script>
 </head>
 <body style="text-align: center">
-    <h1>8ps1 FTW</h1>
-    <img src="https://media.giphy.com/media/102h4wsmCG2s12/giphy.gif" width="50%" alt="8ps1"/>
+<h1>8ps1 FTW</h1>
+<img id="image" src="" width="50%" alt="8ps1"/>
 </body>
 </html>
