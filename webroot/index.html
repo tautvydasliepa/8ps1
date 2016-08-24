@@ -36,7 +36,6 @@
         function randomizeImage(callback){
             findImageTag(function(imageTag){
                 randomImageFromGiphy(function(randomImage){
-                    console.log(randomImage);
                     changeImageSrc(imageTag, randomImage, function(){
                         callback();
                     });
